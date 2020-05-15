@@ -8,21 +8,6 @@ class Graph(object):
 		self.pheromone = [[1 for j in range(self.size)] for i in range(self.size)]
 
 
-	def distance(a, b):
-		return math.sqrt((a.x - b.x)**2 + (a.y - b.y)**2)
-
-
-	def cost_matrix(cities):
-		cost_matrix = []
-		rank = len(cities)
-		for i in range(rank):
-			row = []
-			for j in range(rank):
-				row.append(Graph.distance(cities[i], cities[j]))
-			cost_matrix.append(row)
-		return cost_matrix
-
-
 	def nearestNeighbourSolution(self):
 		node = 0
 		result = [node]
@@ -46,3 +31,20 @@ class Graph(object):
 			cost += self.cost[i][j]
 		cost += self.cost[path[0]][path[-1]] #round trip
 		return cost
+
+
+	@staticmethod
+	def distance(a, b):
+		return math.sqrt((a.x - b.x)**2 + (a.y - b.y)**2)
+
+
+	@staticmethod
+	def cost_matrix(cities):
+		cost_matrix = []
+		rank = len(cities)
+		for i in range(rank):
+			row = []
+			for j in range(rank):
+				row.append(Graph.distance(cities[i], cities[j]))
+			cost_matrix.append(row)
+		return cost_matrix

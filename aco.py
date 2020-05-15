@@ -15,10 +15,12 @@ class ACO(object):
 		self.alpha_p = alpha
 		self.beta_p = beta
 
+
 	def _update_parameters(self,gen):
 		self.decay = self.decay_p[0] + (self.decay_p[1]-self.decay_p[0])*gen/self.generations
 		self.alpha = self.alpha_p[0] + (self.alpha_p[1]-self.alpha_p[0])*gen/self.generations
 		self.beta = self.beta_p[0] + (self.beta_p[1]-self.beta_p[0])*gen/self.generations
+
 
 	def _update_pheromone(self, graph: Graph, ants: list):
 		for i, row in enumerate(graph.pheromone):
@@ -72,6 +74,7 @@ class _Ant(object):
 		self.path.append(0)
 		self.capacity = 0
 		self.curr = 0
+
 
 	def _select_next(self):
 		if(self.capacity > self.max_capacity):
