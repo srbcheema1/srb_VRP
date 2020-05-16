@@ -75,22 +75,17 @@ class _Ant(object):
 		return self.cost
 
 
-	def _unload(self):
-		self.path.append(0)
-		self.capacity = 0
-		self.curr = 0
-
-
 	def _select_next(self):
 		if(self.capacity > self.max_capacity):
-			self._unload()
+			self.path.append(0)
+			self.capacity = 0
+			self.curr = 0
 
 		denominator = 0
 		for i in self.allowed:
 			denominator += (1+self.graph.pheromone[self.curr][i])**self.aco.alpha \
 											* self.ease[self.curr][i]**self.aco.beta \
 											* self._clustoring_factor(i)
-
 
 		probabilities = [0 for i in range(self.graph.size)]  # probabilities for moving to a node in the next step
 		for i in self.allowed:
@@ -102,12 +97,14 @@ class _Ant(object):
 		self.path.append(self.curr)
 		self.capacity = self.capacity + 1
  
+
 	def _clustoring_factor(self,i):
 		if(self.curr == 0):
 			return 1
 		filled = self.capacity/self.max_capacity
 		far_fact = (abs(filled-1/2)*4 - 1) * (-1)
 		return (1+self.graph.cost[self.curr][0])**(far_fact/4)
+
 
 	def _select_according_to_probability(self,probabilities):
 		rand = random.random()
@@ -123,6 +120,7 @@ class _Ant(object):
 			i = self.path[_ - 1]
 			j = self.path[_]
 			self.pheromone_delta[i][j] = self.aco.quantity
+
 
 	def __lt__(self, other):
 		return self.cost < other.cost
