@@ -45,8 +45,6 @@ class DynamicPlot():
 		self.ax.set_xlim(0, (max(x)+2) * 1.1)
 		self.ax.set_ylim(0, (max(y)+2)* 1.1)
 		self._flush()
-		plt.ioff()
-		plt.show()
 
 
 	def show(self,cities,history):
@@ -54,6 +52,12 @@ class DynamicPlot():
 			self.plot(cities,path)
 			time.sleep(1)
 		self.plot_final(cities,history[-1])
+		self.end()
+
+
+	def end(self):
+		plt.ioff()
+		plt.show()
 
 
 	def _flush(self):
