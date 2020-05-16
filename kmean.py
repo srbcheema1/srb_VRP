@@ -29,7 +29,7 @@ class Kmean:
 
 	def _radially_sorted_point_sets(self):
 		point_sets = []
-		self.points.sort(key=lambda x: x.r)
+		self.points.sort(key=lambda x: x.theta)
 		cnt = 0
 		loc_set = []
 		for point in self.points:
