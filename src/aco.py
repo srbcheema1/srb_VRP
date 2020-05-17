@@ -1,6 +1,7 @@
 import random
 
 from .graph import Graph
+from .const import srb_cap
 
 class ACO(object):
 	def __init__(self, ant_count: int, generations: int, quantity: int, alpha: list, beta: list, decay: list):
@@ -57,7 +58,7 @@ class _Ant(object):
 		self.allowed = {i for i in range(graph.size)}  # nodes which are allowed for the next selection
 		self.ease = [[0 if i == j else 10 / (1 + graph.cost[i][j]) for j in range(graph.size)] for i in range(graph.size)]  # heuristic information
 		self.capacity = 0
-		self.max_capacity = 10
+		self.max_capacity = srb_cap
 
 		self.path = []  # path list
 		self.cost = 0 # path cost by ant

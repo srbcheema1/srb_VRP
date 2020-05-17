@@ -1,38 +1,43 @@
 import math
 import numpy as np
 
+from .const import srb_cap
 
 
 class Kmean:
-	def __init__(self,cities,cap=10):
-		self.cities = cities
-		self.origin = [cities[0].x,cities[0].y]
-		self.points = [Point(city.x,city.y,self.origin,city.index) for city in cities[1:]]
+	def __init__(self,points,origin,base=0,cap=srb_cap):
+		self.origin = origin
+		self.points = [Point(point[0],point[1],self.origin,i+base) for i,point in enumerate(points)] # one based indexing, coz 0 is origin
+		self.points.sort(key=lambda x: x.theta)
 		self.cap = cap
-		self.partitions = []
+		self.partition = None # partition is set of clusters
 		self.compute()
 
 
 	def compute(self):
-		point_sets = self._radially_sorted_point_sets()
-
-		for pset in point_sets:
+		partitions_list = []
+		for _ in range(self.cap):
 			partition = Partition()
-			partition.mean_point = Point(np.mean([a.x for a in pset]), np.mean([a.y for a in pset]), self.origin)
-			self.partitions.append(partition)
+			point_sets = self._radially_sorted_point_sets(_)
 
-		#cheap way
-		for i,part in enumerate(self.partitions):
-			part.points = point_sets[i]
-			part.cities = [self.cities[a.index] for a in part.points]
+			for pset in point_sets:
+				cluster = Cluster()
+				cluster.mean_point = Point(np.mean([a.x for a in pset]), np.mean([a.y for a in pset]), self.origin)
+				partition.clusters.append(cluster)
+
+			#cheap way
+			for i,cluster in enumerate(partition.clusters):
+				cluster.points = point_sets[i]
+			partitions_list.append(partition)
+		self.partition = partitions_list[0]
 
 
-	def _radially_sorted_point_sets(self):
+	def _radially_sorted_point_sets(self,offset=0):
+		points = self.points[offset:] + self.points[:offset]
 		point_sets = []
-		self.points.sort(key=lambda x: x.theta)
 		cnt = 0
 		loc_set = []
-		for point in self.points:
+		for point in points:
 			loc_set.append(point)
 			cnt+=1
 			if(cnt == self.cap):
@@ -70,12 +75,20 @@ class Point:
 
 class Partition:
 	def __init__(self):
+		self.clusters = []
+		self.variance = 0
+		pass
+
+
+
+class Cluster:
+	def __init__(self):
 		self.points = []
-		self.cities = []
 		self.mean_point = Point(0,0,[0,0])
+		self.variance = 0
 	
 	def __str__(self):
-		return "(" + str(self.mean_point) + ":" + str(len(self.points)) + "::"+ str(self.cities) + ")"
+		return "(" + str(self.mean_point) + ":" + str(len(self.points)) + "::"+ str(self.points) + ")"
 
 	def __repr__(self):
 		return str(self)

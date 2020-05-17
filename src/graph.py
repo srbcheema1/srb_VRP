@@ -79,3 +79,6 @@ class Graph(object):
 			cost += self.cost[i][j]
 		cost += self.cost[path[0]][path[-1]] #round trip
 		return cost
+
+	def get_indices(self,path):
+		return [self.cities[i].index for i in path]

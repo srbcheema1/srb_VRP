@@ -17,8 +17,8 @@ class DynamicPlot():
 		self.ax[1,2].set_title("Optmimization")
 
 
-	def show(self,cities,history,a_history,graph,partitions):
-		PartitionDisplay(self.ax[1,0]).plot_partitions(partitions,cities[0])
+	def show(self,cities,history,a_history,graph,clusters):
+		PartitionDisplay(self.ax[1,0]).plot_partitions(clusters,cities[0])
 		acoDisplay = HistoryDisplay(self.ax[0,1],cities,a_history,self._flush)
 		srbDisplay = HistoryDisplay(self.ax[1,1],cities,history,self._flush)
 
