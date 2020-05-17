@@ -16,9 +16,11 @@ class DynamicPlot():
 		self.ax[1,1].set_title("SA with Kmean")
 		self.ax[1,2].set_title("Optmimization")
 
-
-	def show(self,cities,history,a_history,graph,clusters):
+	def displayClusters(self,clusters,cities):
 		PartitionDisplay(self.ax[1,0]).plot_partitions(clusters,cities[0])
+		self._flush()
+
+	def show(self,cities,history,a_history,graph):
 		acoDisplay = HistoryDisplay(self.ax[0,1],cities,a_history,self._flush)
 		srbDisplay = HistoryDisplay(self.ax[1,1],cities,history,self._flush)
 

@@ -28,7 +28,11 @@ class Kmean:
 			#cheap way
 			for i,cluster in enumerate(partition.clusters):
 				cluster.points = point_sets[i]
+				cluster.calc_variance()
+			partition.calc_variance()
 			partitions_list.append(partition)
+
+		partitions_list.sort()
 		self.partition = partitions_list[0]
 
 
@@ -58,6 +62,9 @@ class Point:
 		self.r, self.theta = Point.polar(self.x-self.ox,self.y-self.oy)
 		self.index = index
 	
+	def distance(self,other):
+		return ((self.x - other.x)**2 + (self.y - other.y)**2)**2 * (abs(self.theta - other.theta)**0.5+1)
+	
 	def __str__(self):
 		return "(" + str(self.index) + ":" + str(self.x) + "," + str(self.y) + ")"
 
@@ -77,9 +84,13 @@ class Partition:
 	def __init__(self):
 		self.clusters = []
 		self.variance = 0
-		pass
-
-
+	
+	def calc_variance(self):
+		for cluster in self.clusters:
+			self.variance += cluster.variance
+	
+	def __lt__(self,other):
+		return self.variance < other.variance
 
 class Cluster:
 	def __init__(self):
@@ -87,6 +98,10 @@ class Cluster:
 		self.mean_point = Point(0,0,[0,0])
 		self.variance = 0
 	
+	def calc_variance(self):
+		for pt in self.points:
+			self.variance += pt.distance(self.mean_point)
+
 	def __str__(self):
 		return "(" + str(self.mean_point) + ":" + str(len(self.points)) + "::"+ str(self.points) + ")"
 
