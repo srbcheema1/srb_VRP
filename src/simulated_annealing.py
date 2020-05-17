@@ -1,7 +1,7 @@
 import math
 import random
 
-from graph import Graph
+from .graph import Graph
 
 
 class SimulatedAnnealing:

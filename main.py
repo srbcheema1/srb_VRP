@@ -1,8 +1,9 @@
-from aco import ACO, Graph
-from dynamic_plot import DynamicPlot
-from city import City
-from kmean import Kmean
-from simulated_annealing import SimulatedAnnealing
+from src.graph import Graph
+from src.aco import ACO
+from src.display.dynamic_plot import DynamicPlot
+from src.city import City
+from src.kmean import Kmean
+from src.simulated_annealing import SimulatedAnnealing
 
 def _get_indices(path,graph):
 	return [graph.cities[i].index for i in path]

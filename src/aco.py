@@ -1,6 +1,6 @@
 import random
 
-from graph import Graph
+from .graph import Graph
 
 class ACO(object):
 	def __init__(self, ant_count: int, generations: int, quantity: int, alpha: list, beta: list, decay: list):
