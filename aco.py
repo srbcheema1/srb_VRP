@@ -55,7 +55,7 @@ class _Ant(object):
 
 		self.pheromone_delta = []  # the local increase of pheromone
 		self.allowed = {i for i in range(graph.size)}  # nodes which are allowed for the next selection
-		self.ease = [[0 if i == j else 1 + (10 / graph.cost[i][j]) for j in range(graph.size)] for i in range(graph.size)]  # heuristic information
+		self.ease = [[0 if i == j else 10 / (1 + graph.cost[i][j]) for j in range(graph.size)] for i in range(graph.size)]  # heuristic information
 		self.capacity = 0
 		self.max_capacity = 10
 

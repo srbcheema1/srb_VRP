@@ -41,15 +41,15 @@ class SimulatedAnnealing:
 		while self.temp >= self.stopping_temp and self.iteration < self.stopping_iter:
 			candidate = list(self.curr_solution)
 			l = random.randint(2, self.sample_size - 1)
-			i = random.randint(0, self.sample_size - l)
+			i = random.randint(1, self.sample_size - l)
 			candidate[i: (i + l)] = reversed(candidate[i: (i + l)])
 
 			self.accept(candidate)
 			self.temp *= self.alpha
 			self.iteration += 1
 
-		self.print_summary()
-		return self.history
+		# self.print_summary()
+		return self.history,self.min_weight
 
 
 	def print_summary(self):

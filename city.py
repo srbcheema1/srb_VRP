@@ -1,8 +1,8 @@
 class City:
 	def __init__(self,index,x,y):
 		self.index = int(index)
-		self.x = int(x)
-		self.y = int(y)
+		self.x = float(x)
+		self.y = float(y)
 
 
 	def __repr__(self):
