@@ -20,22 +20,27 @@ class DynamicPlot():
 		PartitionDisplay(self.ax[1,0]).plot_partitions(clusters,cities[0])
 		self._flush()
 
-	def show(self,cities,history,a_history,graph):
-		acoDisplay = HistoryDisplay(self.ax[0,1],cities,a_history,self._flush)
-		srbDisplay = HistoryDisplay(self.ax[1,1],cities,history,self._flush)
+	def show(self,cities,s_history,aco_history,saco_history,graph):
+		acoDisplay = HistoryDisplay(self.ax[0,1],cities,aco_history,self._flush)
+		sacoDisplay = HistoryDisplay(self.ax[0,2],cities,aco_history,self._flush)
+		sDisplay = HistoryDisplay(self.ax[1,1],cities,s_history,self._flush)
 
-		for i in range(max(len(a_history),len(history))):
-			if(i == len(a_history)-1):
-				acoDisplay.plot_final(a_history[i])
-			if(i<len(a_history)-1):
-				acoDisplay.plot(a_history[i])
-			if(i == len(history)-1):
-				srbDisplay.plot_final(history[i])
-			if(i<len(history)-1):
-				srbDisplay.plot(history[i])
+		for i in range(max(len(s_history),len(aco_history),len(saco_history))):
+			if(i == len(aco_history)-1):
+				acoDisplay.plot_final(aco_history[i])
+			if(i<len(aco_history)-1):
+				acoDisplay.plot(aco_history[i])
+			if(i == len(saco_history)-1):
+				sacoDisplay.plot_final(saco_history[i])
+			if(i<len(saco_history)-1):
+				sacoDisplay.plot(saco_history[i])
+			if(i == len(s_history)-1):
+				sDisplay.plot_final(s_history[i])
+			if(i<len(s_history)-1):
+				sDisplay.plot(s_history[i])
 			time.sleep(1)
 
-		OutcomeDisplay(self.ax[1,2]).plot_learning(history,a_history,graph)
+		OutcomeDisplay(self.ax[1,2]).plot_learning(s_history,aco_history,saco_history,graph)
 		self.end()
 
 

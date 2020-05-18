@@ -77,7 +77,7 @@ class _Ant(object):
 
 
 	def _select_next(self):
-		if(self.capacity > self.max_capacity):
+		if(self.capacity >= self.max_capacity):
 			self.path.append(0)
 			self.capacity = 0
 			self.curr = 0

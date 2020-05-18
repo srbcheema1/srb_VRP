@@ -4,6 +4,7 @@ from src.display.dynamic_plot import DynamicPlot
 from src.city import City
 from src.kmean import Kmean, Cluster, Point
 from src.simulated_annealing import SimulatedAnnealing
+from src.simulated_clusters import anneal_aco
 
 def combine_histories(clusters_history):
 	combined_history = [] # combined of all clusters
@@ -31,6 +32,7 @@ def anneal_clusters(clusters,cities):
 
 
 def anneal_srb_kmeans(cities,plt):
+	# equal sized clusters, good results
 	k = Kmean(points=[[city.x,city.y] for city in cities[1:]],origin=[cities[0].x,cities[0].y],base=1)
 	plt.displayClusters(k.partition.clusters,cities)
 	return anneal_clusters(k.partition.clusters,cities)
@@ -38,6 +40,7 @@ def anneal_srb_kmeans(cities,plt):
 
 def anneal_sklearn_kmeans(cities,plt):
 	# unequal sized clusters, so useless
+	# history,cost = anneal_sklearn_kmeans(cities,plt)
 	from sklearn.cluster import KMeans
 	data = [[city.x,city.y] for city in cities[1:]]
 	N = (len(cities)+9)//10
@@ -55,10 +58,11 @@ def anneal_sklearn_kmeans(cities,plt):
 
 
 if __name__ == '__main__':
-	cities = City.load_cities('./data/data40.txt')
+	cities = City.load_cities('./data/data30.txt')
 	graph = Graph(cities)
-	a_history,_ = ACO(20, 100, 10, [1.0,2.0], [2.0,1.0], [0.4,0.8]).solve(graph)
+	aco_history,aco_cost = ACO(20, 100, 10, [1.0,2.0], [2.0,1.0], [0.4,0.8]).solve(graph)
+	saco_history,saco_cost = anneal_aco(aco_history[-1],cities,graph)
 	plt = DynamicPlot()
-	history,_ = anneal_srb_kmeans(cities,plt)
-	# history,_ = anneal_sklearn_kmeans(cities,plt)
-	plt.show(cities,history,a_history,graph)
+	s_history,s_cost = anneal_srb_kmeans(cities,plt)
+	print(aco_cost,saco_cost,s_cost)
+	plt.show(cities,s_history,aco_history,saco_history,graph)
