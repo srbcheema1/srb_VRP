@@ -6,23 +6,38 @@ from .graph import Graph
 
 class SimulatedAnnealing:
 	def __init__(self, graph:Graph, init_soln, alpha, temp, stopping_temp, stopping_iter):
-		self.graph = graph #array_like,list of coordinates
 		self.temp = temp #initial temperature
 		self.alpha = alpha #rate at which temp decreases
 		self.stopping_temp = stopping_temp
 		self.stopping_iter = stopping_iter
 		self.iteration = 1
 
-		self.curr_solution = init_soln
+		self.graph = graph
+		self.curr_solution = self.create_clusters(init_soln)
 		self.history = [self.combined_path(self.curr_solution)]
 		self.curr_weight = self.graph.path_cost(self.combined_path(self.curr_solution))
 		self.min_weight = self.curr_weight
-	
+
+
+	def create_clusters(self,path):
+		clusters = []
+		path = path[1:] + [0]
+		loc_path = [0]
+		for val in path:
+			if(val == 0):
+				clusters.append(loc_path)
+				loc_path = [0]
+			else:
+				loc_path.append(val)
+		return clusters
+
+
 	def combined_path(self,paths):
 		full_path = []
 		for path in paths:
 			full_path.extend(path)
 		return full_path
+
 
 	def acceptance_probability(self, candidate_weight):
 		return math.exp(-abs(candidate_weight - self.curr_weight) / self.temp)
@@ -39,6 +54,7 @@ class SimulatedAnnealing:
 		elif random.random() < self.acceptance_probability(candidate_weight):
 			self.curr_weight = candidate_weight
 			self.curr_solution = candidate
+
 
 	def get_candidate(self):
 		candidate = []
@@ -60,25 +76,11 @@ class SimulatedAnnealing:
 			candidate[i][a: (a + b)] = reversed(candidate[i][a: (a + b)])
 		return candidate
 
+
 	def anneal(self):
 		while self.temp >= self.stopping_temp and self.iteration < self.stopping_iter:
 			candidate = self.get_candidate()
 			self.accept(candidate)
 			self.temp *= self.alpha
 			self.iteration += 1
-
 		return self.history,self.min_weight
-
-
-def anneal_aco(_path,cities,graph):
-	clusters = []
-	path = _path[1:] + [0]
-	loc_path = [0]
-	for val in path:
-		if(val == 0):
-			clusters.append(loc_path)
-			loc_path = [0]
-		else:
-			loc_path.append(val)
-
-	return SimulatedAnnealing(graph,clusters,0.99998 , 1, 0.00000001, 10000000).anneal()
