@@ -1,6 +1,7 @@
 from .graph import Graph
 from .simulated_annealing import SimulatedAnnealing
 from .kmean import Kmean, Cluster, Point
+from src.const import srb_cap
 
 def free_path(cities):
 	path = [0]

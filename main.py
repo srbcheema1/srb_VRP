@@ -4,10 +4,9 @@ from src.aco import ACO
 from src.simulated_clusters import SimulatedAnnealing
 from src.display.dynamic_plot import DynamicPlot
 from src.util import srb_kmeans, free_path
-from src.const import srb_cap
 
 if __name__ == '__main__':
-	cities = City.load_cities('./data/data50.txt')
+	cities = City.load_cities('./data/data60.txt')
 	graph = Graph(cities)
 	aco_history,aco_cost = ACO(10, 50, 10, [1.0,2.0], [2.0,1.0], [0.4,0.8]).solve(graph)
 	params = [0.99998 , 1, 0.0000001, 1000000]
