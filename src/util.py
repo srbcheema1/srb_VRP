@@ -2,6 +2,19 @@ from .graph import Graph
 from .simulated_annealing import SimulatedAnnealing
 from .kmean import Kmean, Cluster, Point
 
+def free_path(cities):
+	path = [0]
+	added = 0
+	for i in range(1,len(cities)):
+		path.append(i)
+		added += 1
+		if(added >= srb_cap):
+			added = 0
+			path.append(0)
+	if(path[-1]==0):
+		path.pop()
+	return path
+
 def clusters_to_list(clusters):
 	path = []
 	for cluster in clusters:

@@ -6,7 +6,8 @@ from .subplots.historyDisplay import HistoryDisplay
 from .subplots.partitionDisplay import PartitionDisplay
 
 class DynamicPlot():
-	def __init__(self):
+	def __init__(self,animate=False):
+		self.animate = animate
 		plt.ion() # plot interactive mode ON
 		self.figure, self.ax = plt.subplots(2,3)
 		self.ax[0,0].set_title("free SA")
@@ -52,7 +53,7 @@ class DynamicPlot():
 				skmeanDisplay.plot_final(skmean_history[i])
 			if(i<len(skmean_history)-1):
 				skmeanDisplay.plot(skmean_history[i])
-			time.sleep(_get_time(i))
+			if(self.animate): time.sleep(_get_time(i))
 
 		OutcomeDisplay(self.ax[1,2]).plot_learning(skmean_history,aco_history,saco_history,free_history,graph)
 		self.end()

@@ -3,21 +3,8 @@ from src.graph import Graph
 from src.aco import ACO
 from src.simulated_clusters import SimulatedAnnealing
 from src.display.dynamic_plot import DynamicPlot
-from src.util import srb_kmeans
+from src.util import srb_kmeans, free_path
 from src.const import srb_cap
-
-def free_path(cities):
-	path = [0]
-	added = 0
-	for i in range(1,len(cities)):
-		path.append(i)
-		added += 1
-		if(added >= srb_cap):
-			added = 0
-			path.append(0)
-	if(path[-1]==0):
-		path.pop()
-	return path
 
 if __name__ == '__main__':
 	cities = City.load_cities('./data/data50.txt')
