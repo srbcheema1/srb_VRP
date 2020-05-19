@@ -3,7 +3,7 @@ from .simulated_annealing import SimulatedAnnealing
 from .kmean import Kmean, Cluster, Point
 from src.const import srb_cap
 
-def free_path(cities):
+def free_path(cities,cap=srb_cap):
 	path = [0]
 	added = 0
 	for i in range(1,len(cities)):
@@ -23,9 +23,9 @@ def _clusters_to_list(clusters):
 		path.extend([pt.index for pt in cluster.points])
 	return path
 
-def srb_kmeans(cities):
+def srb_kmeans(cities,cap=srb_cap):
 	# equal sized clusters, good results
-	k = Kmean(points=[[city.x,city.y] for city in cities[1:]],origin=[cities[0].x,cities[0].y],base=1)
+	k = Kmean(points=[[city.x,city.y] for city in cities[1:]],origin=[cities[0].x,cities[0].y],base=1,cap=cap)
 	return _clusters_to_list(k.partition.clusters),k.partition.clusters
 
 

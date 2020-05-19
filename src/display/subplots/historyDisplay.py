@@ -7,6 +7,10 @@ class HistoryDisplay:
 		self.cyan_line, = self.ax.plot([],[], 'co-') # intermediate path
 		self.green_line, = self.ax.plot([],[], 'go-') # final path
 		self.red_line, = self.ax.plot([],[], 'ro') # depot
+		# self.ax.annotate("{:.2f} sec".format(time),
+    #         xy=(0.10,0.9), xycoords='axes fraction',
+    #         size=8,
+    #         bbox=dict(boxstyle="round", fc=(0.5,0.5,0.5), ec="none"))
 		self.set_lim()
 
 

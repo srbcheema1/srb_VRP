@@ -4,10 +4,11 @@ from .graph import Graph
 from .const import srb_cap
 
 class ACO(object):
-	def __init__(self, ant_count: int, generations: int, quantity: int, alpha: list, beta: list, decay: list):
+	def __init__(self, ant_count: int, generations: int, quantity: int, alpha: list, beta: list, decay: list, cap:int=srb_cap):
 		self.quantity = quantity #pheromone intensity
 		self.ant_count = ant_count
 		self.generations = generations
+		self.cap = cap
 		#these will vary with generations
 		self.decay = decay[0] #evaporation or decay of phermone
 		self.beta = beta[0] #relative importance of heuristic information
@@ -58,7 +59,7 @@ class _Ant(object):
 		self.allowed = {i for i in range(graph.size)}  # nodes which are allowed for the next selection
 		self.ease = [[0 if i == j else 10 / (1 + graph.cost[i][j]) for j in range(graph.size)] for i in range(graph.size)]  # heuristic information
 		self.capacity = 0
-		self.max_capacity = srb_cap
+		self.max_capacity = self.aco.cap
 
 		self.path = []  # path list
 		self.cost = 0 # path cost by ant

@@ -5,6 +5,7 @@ from .subplots.outcomeDisplay import OutcomeDisplay
 from .subplots.historyDisplay import HistoryDisplay
 from .subplots.partitionDisplay import PartitionDisplay
 
+
 class DynamicPlot():
 	def __init__(self,animate=False):
 		self.animate = animate
@@ -17,9 +18,11 @@ class DynamicPlot():
 		self.ax[1,1].set_title("KMean - SA")
 		self.ax[1,2].set_title("Outcome")
 
+
 	def displayClusters(self,clusters,cities):
 		PartitionDisplay(self.ax[1,0]).plot_partitions(clusters,cities[0])
 		self._flush()
+
 
 	def show(self,cities,sa_history,aco_history,saco_history,kmean_clusters,skmean_history,graph):
 		self.displayClusters(kmean_clusters,cities)
@@ -35,7 +38,8 @@ class DynamicPlot():
 			if(i < 20): return 0.3
 			return 0.2
 
-		for i in range(max(len(skmean_history),len(aco_history),len(saco_history),len(sa_history))):
+		sa_history,aco_history,saco_history,skmean_history = self._compress_histories([sa_history,aco_history,saco_history,skmean_history])
+		for i in range(max(len(sa_history),len(aco_history),len(saco_history),len(skmean_history))):
 			if(i == len(sa_history)-1):
 				saDisplay.plot_final(sa_history[i])
 			if(i<len(sa_history)-1):
@@ -58,6 +62,15 @@ class DynamicPlot():
 			if(self.animate): time.sleep(_get_time(i))
 
 		self.end()
+
+
+	def _compress_histories(self,histories):
+		n = 10
+		for i,history in enumerate(histories):
+			l = len(history)
+			if(l > 10):
+				histories[i] = [history[int((i/(n-1))*(l-1))] for i in range(n)]
+		return tuple(histories)
 
 
 	def end(self):
