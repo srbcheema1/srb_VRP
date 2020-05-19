@@ -49,5 +49,5 @@ def extract_output():
 	tabular.write_xls('output/data.xls')
 
 if __name__ == '__main__':
-	# run(City.load_cities('output/data60.txt'),cap=10)
-	extract_output()
+	run(City.load_cities('data/data60.txt'),cap=10)
+	# extract_output() # only to extract data
