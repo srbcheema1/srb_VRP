@@ -16,21 +16,20 @@ def free_path(cities):
 		path.pop()
 	return path
 
-def clusters_to_list(clusters):
+def _clusters_to_list(clusters):
 	path = []
 	for cluster in clusters:
 		path.append(0)
 		path.extend([pt.index for pt in cluster.points])
 	return path
 
-def srb_kmeans(cities,plt):
+def srb_kmeans(cities):
 	# equal sized clusters, good results
 	k = Kmean(points=[[city.x,city.y] for city in cities[1:]],origin=[cities[0].x,cities[0].y],base=1)
-	plt.displayClusters(k.partition.clusters,cities)
-	return clusters_to_list(k.partition.clusters)
+	return _clusters_to_list(k.partition.clusters),k.partition.clusters
 
 
-def sklearn_kmeans(cities,plt):
+def sklearn_kmeans(cities):
 	# unequal sized clusters, so useless
 	# history,cost = anneal_sklearn_kmeans(cities,plt)
 	from sklearn.cluster import KMeans
@@ -38,15 +37,14 @@ def sklearn_kmeans(cities,plt):
 	N = (len(cities)+9)//10
 	k = KMeans(n_clusters=N)
 	label = k.fit(data).predict(data)
-	clusters = [Cluster() for _ in range(N)]
+	clusters = [Cluster([cities[0].x,cities[0].y]) for _ in range(N)]
 	origin = [cities[0].x,cities[0].y]
 
 	for i,pt in enumerate(data):
 		clusters[label[i]].points.append(Point(pt[0],pt[1],origin,i+1))
 		clusters[label[i]].mean_point = Point(k.cluster_centers_[label[i]][0],k.cluster_centers_[label[i]][1],origin)
 
-	plt.displayClusters(clusters,cities)
-	return clusters_to_list(clusters)
+	return _clusters_to_list(clusters),clusters
 
 '''
 these are useless now, instead use SimulatedAnnealing from .simulated_clusters
