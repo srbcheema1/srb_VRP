@@ -37,13 +37,13 @@ def run(cities,cap=10,disp=True):
 
 def extract_output():
 	data = [["N","Cap","SA","ACO","ACO-SA","Kmean-SA"]]
-	for _ in range(2):
+	for i in range(100):
 		cities = City.generate_cities()
 		n = len(cities)
 		cap = 10 if n <=60 else 20
 		ret = run(cities,cap,disp=False)
 		data.append([n,cap] + ret)
-		print(Tabular([[n,cap] + ret]))
+		print(Tabular([[i,n,cap] + ret]))
 	tabular = Tabular(data)
 	tabular.write_json('output/out.json')
 	tabular.write_xls('output/data.xls')
