@@ -1,3 +1,4 @@
+from random import randint
 class City:
 	def __init__(self,index,x,y):
 		self.index = int(index)
@@ -22,4 +23,20 @@ class City:
 				city = line.split(' ')
 				cities.append(City(index,city[0],city[1]))
 				index+=1
+		return cities
+
+
+	@staticmethod
+	def generate_cities():
+		n = randint(30,100)
+		pt_set = set()
+		cities = []
+		for i in range(n):
+			a = randint(1,50)
+			b = randint(1,50)
+			while((a,b) in pt_set):
+				a = randint(1,50)
+				b = randint(1,50)
+			pt_set.add((a,b))
+			cities.append(City(i,a,b))
 		return cities

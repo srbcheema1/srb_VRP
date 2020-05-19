@@ -1,4 +1,6 @@
 import time
+from srblib import Tabular
+
 from src.city import City
 from src.graph import Graph
 from src.aco import ACO
@@ -6,8 +8,7 @@ from src.simulated_clusters import SimulatedAnnealing
 from src.display.dynamic_plot import DynamicPlot
 from src.util import srb_kmeans, free_path, sklearn_kmeans
 
-def run(file_name,cap=10):
-	cities = City.load_cities(file_name)
+def run(cities,cap=10,disp=True):
 	graph = Graph(cities)
 	params = [0.99998 , 1, 0.000001, 100000] # at this iterations end, at 0.9998 temp will
 	times = [time.time()]
@@ -28,10 +29,25 @@ def run(file_name,cap=10):
 	times.append(time.time())
 
 	times = [times[i]-times[i-1] for i in range(1,len(times))]
-	print("algo: ","SA","ACO","aco-SA","Kmean","SA")
-	print("times: ",*times)
-	print(sa_cost,aco_cost,saco_cost,skmean_cost)
-	DynamicPlot().show(cities,sa_history,aco_history,saco_history,kmean_clusters,skmean_history,graph)
+	if(disp): print("algo: ","SA","ACO","aco-SA","Kmean","SA")
+	if(disp): print("times: ",*times)
+	if(disp): print(sa_cost,aco_cost,saco_cost,skmean_cost)
+	if(disp): DynamicPlot().show(cities,sa_history,aco_history,saco_history,kmean_clusters,skmean_history,graph)
+	return [sa_cost,aco_cost,saco_cost,skmean_cost]
+
+def extract_output():
+	data = [["N","Cap","SA","ACO","ACO-SA","Kmean-SA"]]
+	for _ in range(2):
+		cities = City.generate_cities()
+		n = len(cities)
+		cap = 10 if n <=60 else 20
+		ret = run(cities,cap,disp=False)
+		data.append([n,cap] + ret)
+		print(Tabular([[n,cap] + ret]))
+	tabular = Tabular(data)
+	tabular.write_json('output/out.json')
+	tabular.write_xls('output/data.xls')
 
 if __name__ == '__main__':
-	run('./data/data60.txt',cap=10)
+	# run(City.load_cities('output/data60.txt'),cap=10)
+	extract_output()
