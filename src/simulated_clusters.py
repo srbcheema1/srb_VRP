@@ -64,6 +64,8 @@ class SimulatedAnnealing:
 		if(way == 0):
 			i = random.randint(0,len(candidate)-1)
 			j = random.randint(0,len(candidate)-1)
+			if(len(candidate[i]) < 2 or len(candidate[j]) < 2): # it wont happen, cluster cant be of 1 size, still safety
+				return candidate
 			ia = random.randint(1,len(candidate[i])-1)
 			jb = random.randint(1,len(candidate[j])-1)
 			candidate[i][ia], candidate[j][jb] = candidate[j][jb],candidate[i][ia]
